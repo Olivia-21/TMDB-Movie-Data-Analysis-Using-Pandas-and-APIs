@@ -1,0 +1,42 @@
+# extract.py
+import os
+import requests
+import pandas as pd
+
+BASE_URL = "https://api.themoviedb.org/3/movie/"
+
+# You should store API key in environment variable
+# API_KEY = os.getenv("TMDB_API_KEY")
+API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNzAzNDQ0YTBjZGMzMzk2MTZiZjRlZDljMDYwOWEzYiIsIm5iZiI6MTc2NDE3MDgwNi42OTgsInN1YiI6IjY5MjcxYzM2ODVmZTQ1MDJiM2VhOTljZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.S2wN2DlbIlbuLr6M7TEGxYDfjKhb0L89YDsV4qQy2jk"
+headers = {
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json;charset=utf-8"
+}
+
+def fetch_movie_details(movie_ids):
+    """Fetch movie details (with credits) from TMDB API."""
+    movies_data = []
+
+    for movie_id in movie_ids:
+        url = f"{BASE_URL}{movie_id}?append_to_response=credits"
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 200:
+            movies_data.append(response.json())
+            print(f"[EXTRACT] Fetched movie ID {movie_id}")
+        else:
+            print(f"[EXTRACT] Failed to fetch movie ID {movie_id}: {response.status_code}")
+
+    return pd.DataFrame(movies_data)
+
+
+def extract():
+    """Master extract function."""
+    movie_ids = [
+        0, 299534, 19995, 140607, 299536, 597, 135397,
+        420818, 24428, 168259, 99861, 284054, 12445,
+        181808, 330457, 351286, 109445, 321612, 260513
+    ]
+
+    df = fetch_movie_details(movie_ids)
+    return df
