@@ -1,8 +1,7 @@
 # transform.py
 import pandas as pd
 
-# ====================== Helper Extraction Functions ======================
-
+# Extraction Functions 
 def extract_cast(credits):
     if isinstance(credits, dict) and "cast" in credits:
         return "|".join([p["name"] for p in credits["cast"][:10]])
@@ -36,10 +35,10 @@ def extract_collection(value):
     return None
 
 
-# ====================== Main Transformation Function ======================
+# Main Transformation Function 
 
 def transform(df):
-    print("[TRANSFORM] Starting transformation...")
+    print("[TRANSFORM] Starting transformation..")
 
     clean_df = df.copy()
 
@@ -47,7 +46,7 @@ def transform(df):
     cols_to_drop = ['adult', 'imdb_id', 'original_title', 'video', 'homepage']
     clean_df = clean_df.drop(columns=cols_to_drop, errors="ignore")
 
-    # Extract credits-based fields
+    # Extract credits-list fields
     clean_df["cast"]       = clean_df["credits"].apply(extract_cast)
     clean_df["director"]   = clean_df["credits"].apply(extract_director)
     clean_df["cast_size"]  = clean_df["credits"].apply(extract_cast_size)
@@ -86,7 +85,7 @@ def transform(df):
     ]
     clean_df = clean_df[[c for c in final_columns if c in clean_df.columns]]
 
-    # ====================== KPI Calculations ======================
+    # KPI Calculations 
     clean_df["profit"] = clean_df["revenue_musd"] - clean_df["budget_musd"]
     clean_df["roi"] = clean_df["revenue_musd"] / clean_df["budget_musd"]
     clean_df["roi"] = clean_df["roi"].replace([float("inf"), -float("inf")], pd.NA)
