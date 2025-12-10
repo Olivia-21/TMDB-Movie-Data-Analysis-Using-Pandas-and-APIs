@@ -3,8 +3,8 @@ import os
 import requests
 import pandas as pd
 
+API_KEY = os.getenv("TMDB_API_KEY")
 BASE_URL = "https://api.themoviedb.org/3/movie/"
-API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNzAzNDQ0YTBjZGMzMzk2MTZiZjRlZDljMDYwOWEzYiIsIm5iZiI6MTc2NDE3MDgwNi42OTgsInN1YiI6IjY5MjcxYzM2ODVmZTQ1MDJiM2VhOTljZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.S2wN2DlbIlbuLr6M7TEGxYDfjKhb0L89YDsV4qQy2jk"
 headers = {
     "Authorization": f"Bearer {API_KEY}",
     "Content-Type": "application/json;charset=utf-8"
