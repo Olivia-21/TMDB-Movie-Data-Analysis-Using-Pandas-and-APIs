@@ -1,7 +1,7 @@
 # pipeline.py
 from extract import extract
 from transform import transform
-# from load import save_to_csv
+from load import save_to_csv
 
 def run_pipeline():
 
@@ -12,10 +12,10 @@ def run_pipeline():
     # Transform
     clean_df = transform(raw_df)
 
-    # # Load
-    # save_to_csv(clean_df)
+    #  Load
+    save_to_csv(clean_df)
 
-    print("\n[PIPELINE] ETL Pipeline completed successfully.\n")
+    print("ETL Pipeline completed successfully.")
 
 
 if __name__ == "__main__":
