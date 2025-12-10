@@ -4,10 +4,8 @@ from transform import transform
 # from load import save_to_csv
 
 def run_pipeline():
-    print("\n==============================")
-    print("   TMDB MOVIE ETL PIPELINE")
-    print("==============================\n")
 
+    print("   TMDB MOVIE ETL PIPELINE")
     # Extract
     raw_df = extract()
 
