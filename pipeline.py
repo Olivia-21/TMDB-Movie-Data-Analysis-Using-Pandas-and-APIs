@@ -2,6 +2,7 @@
 from extract import extract
 from transform import transform
 from load import save_to_csv
+from visualization import generate_all_visualizations
 
 def run_pipeline():
 

@@ -1,7 +1,10 @@
 # extract.py
 import os
+from dotenv import load_dotenv
 import requests
 import pandas as pd
+load_dotenv()
+
 
 API_KEY = os.getenv("TMDB_API_KEY")
 BASE_URL = "https://api.themoviedb.org/3/movie/"
