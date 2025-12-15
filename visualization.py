@@ -3,15 +3,15 @@ import matplotlib.pyplot as plt
 import os
 
 
+#Helper function to save plots to output directory
 def save_plot(filename, output_dir='output/visualizations'):
-    """Helper function to save plots to output directory"""
     os.makedirs(output_dir, exist_ok=True)
     filepath = os.path.join(output_dir, filename)
     plt.savefig(filepath, bbox_inches='tight', dpi=300)
     print(f"Saved: {filepath}")
     plt.close()
 
-
+#Scatter plot for revenue vs Budget
 def plot_revenue_vs_budget(clean_df):
     plt.figure(figsize=(8, 5))
     plt.scatter(clean_df['budget_musd'], clean_df['revenue_musd'])
@@ -21,8 +21,8 @@ def plot_revenue_vs_budget(clean_df):
     save_plot('revenue_vs_budget.png')
 
 
+# Expand genres into separate rows
 def plot_roi_by_genre(clean_df):
-    # Expand genres into separate rows
     genre_df = clean_df[['genres', 'roi']].dropna()
     genre_df = genre_df.assign(genres=genre_df['genres'].str.split('|')).explode('genres')
 
@@ -38,11 +38,8 @@ def plot_roi_by_genre(clean_df):
     save_plot('roi_by_genre.png')
 
 
+    #Scatter plot of Popularity vs Rating (vote_average)
 def plot_popularity_vs_rating(clean_df):
-    """
-    Scatter plot of Popularity vs Rating (vote_average)
-    Shows correlation between movie popularity and user ratings
-    """
     plt.figure(figsize=(8, 5))
     plt.scatter(clean_df['popularity'], clean_df['vote_average'])
     plt.xlabel("Popularity")
@@ -51,13 +48,10 @@ def plot_popularity_vs_rating(clean_df):
     save_plot('popularity_vs_rating.png')
 
 
+    #Line plot showing average revenue trends over years
 def plot_yearly_avg_revenue(clean_df):
-    """
-    Line plot showing average revenue trends over years
-    Displays how box office performance changed across release years
-    """
     clean_df_copy = clean_df.copy()
-    clean_df_copy['release_year'] = clean_df_copy['release_date'].dt.year
+    clean_df_copy['release_year'] = clean_df_copy['release_date'].dt.year()
 
     yearly = clean_df_copy.groupby('release_year')['revenue_musd'].mean()
 
@@ -70,12 +64,8 @@ def plot_yearly_avg_revenue(clean_df):
     save_plot('yearly_avg_revenue.png')
 
 
+#Bar plot comparing average revenue between franchise and standalone movies
 def plot_franchise_vs_standalone(clean_df):
-    """
-    Bar plot comparing average revenue between franchise and standalone movies
-    Franchise movies = those with a collection name
-    Standalone movies = no collection name
-    """
     franchise_df = clean_df[clean_df['belongs_to_collection'].notna()]
     standalone_df = clean_df[clean_df['belongs_to_collection'].isna()]
 
@@ -92,10 +82,8 @@ def plot_franchise_vs_standalone(clean_df):
     plt.show()
 
 
+#Print detailed statistics comparing franchise and standalone movies
 def franchise_vs_standalone_stats(clean_df):
-    """
-    Print detailed statistics comparing franchise and standalone movies
-    """
     franchise_df = clean_df[clean_df['belongs_to_collection'].notna()]
     standalone_df = clean_df[clean_df['belongs_to_collection'].isna()]
 
@@ -106,13 +94,9 @@ def franchise_vs_standalone_stats(clean_df):
     print("\nStandalone Stats:\n", standalone_stats)
 
 
+#Aggregate franchise statistics grouped by collection name
 def franchise_group_analysis(clean_df):
-    """
-    Aggregate franchise statistics grouped by collection name
-    Shows count, budget, revenue, and average rating per franchise
-    """
-    franchise_df = clean_df[clean_df['belongs_to_collection'].notna()]
-    
+    franchise_df = clean_df[clean_df['belongs_to_collection'].notna()]   
     franchise_group = franchise_df.groupby('belongs_to_collection').agg({
         'id': 'count',
         'budget_musd': ['sum', 'mean'],
@@ -125,11 +109,9 @@ def franchise_group_analysis(clean_df):
     return franchise_group.head()
 
 
+    #Aggregate director statistics
 def director_group_analysis(clean_df):
-    """
-    Aggregate director statistics
-    Shows count of movies, total revenue, and average rating per director
-    """
+   
     director_group = clean_df.groupby('director').agg({
         'id': 'count',
         'revenue_musd': 'sum',
@@ -139,10 +121,8 @@ def director_group_analysis(clean_df):
     return director_group.head()
 
 
+    #Search for Science Fiction and Action movies with Bruce Willis
 def search_bruce_willis_scifi_action(clean_df):
-    """
-    Search for Science Fiction and Action movies with Bruce Willis
-    """
     search1 = clean_df[
         clean_df['genres'].str.contains("Science Fiction", na=False) &
         clean_df['genres'].str.contains("Action", na=False) &
@@ -154,10 +134,8 @@ def search_bruce_willis_scifi_action(clean_df):
     return search1[['title', 'genres', 'vote_average']]
 
 
+    #Search for Uma Thurman movies directed by Quentin Tarantino
 def search_uma_thurman_tarantino(clean_df):
-    """
-    Search for Uma Thurman movies directed by Quentin Tarantino
-    """
     search2 = clean_df[
         clean_df['cast'].str.contains("Uma Thurman", na=False) &
         (clean_df['director'] == "Quentin Tarantino")
@@ -168,10 +146,8 @@ def search_uma_thurman_tarantino(clean_df):
     return search2[['title', 'runtime', 'director']]
 
 
+    #Generate all visualizations from the notebook
 def generate_all_visualizations(clean_df):
-    """
-    Generate all visualizations from the notebook
-    """
     print("Generating Revenue vs Budget plot...")
     plot_revenue_vs_budget(clean_df)
     
@@ -203,9 +179,9 @@ def generate_all_visualizations(clean_df):
     print(search_uma_thurman_tarantino(clean_df))
 
 
-if __name__ == "__main__":
     # Example usage - load data and generate visualizations
-    # This assumes clean_movies.csv exists in output/
+if __name__ == "__main__":
+    
     try:
         clean_df = pd.read_csv('output/clean_movies.csv', parse_dates=['release_date'])
         generate_all_visualizations(clean_df)
