@@ -51,7 +51,7 @@ def plot_popularity_vs_rating(clean_df):
     #Line plot showing average revenue trends over years
 def plot_yearly_avg_revenue(clean_df):
     clean_df_copy = clean_df.copy()
-    clean_df_copy['release_year'] = clean_df_copy['release_date'].dt.year()
+    clean_df_copy['release_year'] = clean_df_copy['release_date'].dt.year
 
     yearly = clean_df_copy.groupby('release_year')['revenue_musd'].mean()
 
