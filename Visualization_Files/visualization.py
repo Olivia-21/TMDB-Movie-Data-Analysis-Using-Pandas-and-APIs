@@ -1,14 +1,22 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import logging
 
+
+#Logging comments
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 #Helper function to save plots to output directory
 def save_plot(filename, output_dir='output/visualizations'):
     os.makedirs(output_dir, exist_ok=True)
     filepath = os.path.join(output_dir, filename)
     plt.savefig(filepath, bbox_inches='tight', dpi=300)
-    print(f"Saved: {filepath}")
+    logging.info(f"Saved plot: {filepath}")
+    # print(f"Saved: {filepath}")
     plt.close()
 
 #Scatter plot for revenue vs Budget
@@ -148,35 +156,35 @@ def search_uma_thurman_tarantino(clean_df):
 
     #Generate all visualizations from the notebook
 def generate_all_visualizations(clean_df):
-    print("Generating Revenue vs Budget plot...")
+    logging.info("Generating Revenue vs Budget plot...")
     plot_revenue_vs_budget(clean_df)
     
-    print("\nGenerating ROI by Genre plot...")
+    logging.info("\nGenerating ROI by Genre plot...")
     plot_roi_by_genre(clean_df)
     
-    print("\nGenerating Popularity vs Rating plot...")
+    logging.info("\nGenerating Popularity vs Rating plot...")
     plot_popularity_vs_rating(clean_df)
     
-    print("\nGenerating Yearly Average Revenue plot...")
+    logging.info("\nGenerating Yearly Average Revenue plot...")
     plot_yearly_avg_revenue(clean_df)
     
-    print("\nGenerating Franchise vs Standalone plot...")
+    logging.info("\nGenerating Franchise vs Standalone plot...")
     plot_franchise_vs_standalone(clean_df)
     
-    print("\nFranchise vs Standalone Statistics:")
+    logging.info("\nFranchise vs Standalone Statistics:")
     franchise_vs_standalone_stats(clean_df)
     
-    print("\nFranchise Group Analysis:")
-    print(franchise_group_analysis(clean_df))
+    logging.info("\nFranchise Group Analysis:")
+    logging.info(franchise_group_analysis(clean_df))
     
-    print("\nDirector Group Analysis:")
-    print(director_group_analysis(clean_df))
+    logging.info("\nDirector Group Analysis:")
+    logging.info(director_group_analysis(clean_df))
     
-    print("\nBruce Willis - Science Fiction & Action Movies:")
-    print(search_bruce_willis_scifi_action(clean_df))
+    logging.info("\nBruce Willis - Science Fiction & Action Movies:")
+    logging.info(search_bruce_willis_scifi_action(clean_df))
     
-    print("\nUma Thurman - Quentin Tarantino Movies:")
-    print(search_uma_thurman_tarantino(clean_df))
+    logging.info("\nUma Thurman - Quentin Tarantino Movies:")
+    logging.info(search_uma_thurman_tarantino(clean_df))
 
 
     # Example usage - load data and generate visualizations

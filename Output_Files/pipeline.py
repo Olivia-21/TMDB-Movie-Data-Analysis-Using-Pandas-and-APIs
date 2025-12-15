@@ -16,6 +16,9 @@ def run_pipeline():
     #  Load
     save_to_csv(clean_df)
 
+    # Visualize
+    generate_all_visualizations()
+
     print("ETL Pipeline completed successfully.")
 
 

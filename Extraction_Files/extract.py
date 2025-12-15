@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 import requests
 import pandas as pd
+import time
+import logging
 load_dotenv()
 
 
